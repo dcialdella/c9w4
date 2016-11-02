@@ -5,90 +5,102 @@
 # Find out more about building applications with Shiny here:
 #
 #    http://shiny.rstudio.com/
-#
-
-# WEBAPP
+# c9w4b
 
 library(shiny)
-# library(miniUI)
-# load("~/ownCloud/DOCS DataScience Course/Project_R/DataScience/C9W4/app1/data1.RData")
+# install.packages('ggplot2')
+library('ggplot2')
+# diamonds
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
 
-  # Application title
-  titlePanel("Course 9 - Week 4 - Demo APP (Shiny) dcialdella@gmail.com"),
+  titlePanel("Course 9 - Week 4 - Dinner with Diamonds (using Shiny) dcialdella@gmail.com"),
 
   # Sidebar with a slider input for number of bins
   sidebarLayout(
-      sidebarPanel(
-      h4("Selections"),
-      h4("and press <SUBMIT>"),
-      sliderInput("cicles", "Number of cicles:", min = 1, max = 50,value = 8),
-      numericInput("multi","Multiplicator Factor:", value=2, min=1, max=10, step=1),
-      sliderInput( "rows", "Number of rows:", 0, 100, 0),
-      sliderInput("slide", "Range from/to:", -100,100, value=c(-50,50) ),
-      checkboxInput("showhide","Show/Hide limits:", value=TRUE),
-      submitButton("Submit Here")
+    sidebarPanel(
+      h4("Select & Press <SUBMIT>"),
+      sliderInput("pricei", "Price:", min = 326, max = 18823, value = 9574),
+      numericInput("multi","Carat (0.2 - 5.01):", value=3.85, min=0.2, max=5.01, step=0.5),
+      sliderInput( "rows1", "Color (0-all, 1.I-Ideal to 7.D-Fear ):", value=0, min=0, max=7, step=1),
+      sliderInput("slide", "Recs used, range from/to all:", min=0, max=53940, value=c(1000,2000), step=100 ),
+      checkboxInput("showhide","Show/Hide Lines:", value=TRUE),
+      h4("All Vars are used in filtering/exclusion the data in the graphics generated."),
+      submitButton("SUBMIT")
     ),
 
-    # Show a plot of the generated distribution
     mainPanel(
-      tabsetPanel(type="tabs",
-        tabPanel("Welcome", br(),
-          hr(),
-          h3("Starting Point - Help here."),
-          h4("This is a simulation about CARs data."),
-          br(),
-          h4("You could complete/select options on the left panel"),
-          h4("numbers or sliders."),
-          br(),
-          h4("After select the variations, press button (SUBMIT HERE)."),
-          h4("and must click the second TAB to see the graphics."),
-          br(),
-          h4("In the 3rd tab you will see the numbers obtained"),
-          h4("and some calculations made using the data provided."),
-          br(),
-          h4("The source code on https://github.com/dcialdella/c9w4"),
-          br(),
-          h4("The PPT is stored on https://dcialdella.shinyapps.io/c9w4/"),
-          hr()
-          ),
+    tabsetPanel(type="tabs",
+                tabsetPanel(type="tabs",
+                            tabPanel("Welcome", br(),
+                                     hr(),
+                                     h3("Welcome Page (Help)."),
+                                     br(),
+                                     h4("You must select/enter data as variables and when press SUBMIT, then the graphics will be calculated."),
+                                     br(),
+                                     h4("You could change to another tabs and see data/graphics, then you could change vars again and recalculate it (it's free)."),
+                                     br(),
+                                     h4("In the 2nd tab you will see the numbers typed/used as variables."),
+                                     br(),
+                                     h4("In the 3rd - 5th tab you will see the graphs generated, used to understand the meaning in data related to Diamonds."),
+                                     br(),
+                                     br(),
+                                     h5("Running code:"),
+                                     h5(a("https://dcialdella.shinyapps.io/c9w4/") ),
+                                     h5("The source code:"),
+                                     h5(a("https://github.com/dcialdella/c9w4") ),
+                                     h5("The PPT stored on:"),
+                                     h5(a("https://dcialdella.shinyapps.io/c9w4/") ),
+                                     h5("Relevant info"),
+                                     h5(a("http://www.lumeradiamonds.com/diamond-education/index") ),
+                                     hr()
+                            ),
 
-        tabPanel("Graphics 1", br(),
-          plotOutput("distPlot")    ),
+                            tabPanel("Numbers", br(),
+                                     hr(),
+                                     h3("Vars. provided."),
+                                     hr(),
+                                     h4("Price of Diamond:"),
+                                     textOutput("priceo"),
+                                     hr(),
+                                     h4("Carat:"),
+                                     textOutput("multio"),
+                                     hr(),
+                                     h4("Color (0-all) :"),
+                                     textOutput("rows1o"),
+                                     hr(),
+                                     h4("Records used from file FROM #:"),
+                                     textOutput("slide1"),
+                                     h4("Records end TO #:"),
+                                     textOutput("slide2"),
+                                     hr(),
+                                     h4("Show LINES on graphs:"),
+                                     textOutput("showhideo")
+                            ),
 
-        tabPanel("Graphics 2", br(),
-          plotOutput("distPlot2")),
+                            tabPanel("Histogram on prices", br(),
+                                     hr(),
+                                     h3("Dynamic Graphics."),
+                                     h5("Histogram based on Prices, filtered on COLOR and RECORDS RANGE."),
+                                     plotOutput("distPlot")
+                            ),
 
-        tabPanel("Number results",
-          tabPanel("Numbers",
-            br(),
-            hr(),
-            h3("Data calculated provided here:"),
-            br(),
-            h4("Number of cycles:"),
-            textOutput("bins"),
-            textOutput("data1"),
-            hr(),
-            h4("Data 1"),
-            textOutput("showhideo"),
-            hr(),
-            h4("Data 2"),
-            textOutput("maxX"),
-            hr(),
-            h4("Vario"),
-            textOutput("var1o"),
-            hr(),
-            h4("Data 4"),
-            textOutput("slider1"),
-            hr(),
-            h4("Data 5"),
-            textOutput("slider1"),
-            hr()
-          )
-          )
-        )
+                            tabPanel("Pairs on data.", br(),
+                                     hr(),
+                                     h5("Need some seconds to calculate it...please wait."),
+                                     plotOutput("distPlot2")
+                            ),
+
+                            tabPanel("Comparatives", br(),
+                                     hr(),
+                                     h3("Filtered data, Price & Carat used."),
+                                     plotOutput("distPlot3")
+                            )
+                )
       )
-  )
-))
+   )
+ )
+)
+)
+

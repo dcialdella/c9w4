@@ -1,0 +1,80 @@
+Course Project: Shiny Application and Reproducible Pitch
+========================================================
+author: Daniel Cialdella - dcialdella@gmail.com
+date:   24-10-2016
+autosize: true
+
+Overview
+========================================================
+
+This presentation was built as part of a deliverable for the course Developing Data Products as part of the Coursera Data Science Specialization. Course 9 - Week 4. (c9w4b)
+
+The data used was based in Diamonds information.
+
+- Running code: https://dcialdella.shinyapps.io/c9w4/
+- The source code: https://github.com/dcialdella/c9w4
+- The PPT stored on: https://dcialdella.shinyapps.io/c9w4/
+- Relevant info: http://www.lumeradiamonds.com/diamond-education/index
+
+Rules to take care about it:
+
+- Shiny used to build data product application demo.
+- R-presentation editor to create the Presentation associated.
+- Information provided by Cityhall Alcalá de Henares.
+
+
+Slide Reference data
+========================================================
+Welcome page, show VARs to complete/Select, brief detail about the data and the information provided.
+VARIABLES
+- Price - will show line with this referenced value
+- Carat - Used to select Carat (between 0.2 and 5.01)
+- Color - Select quality (0-all, 1 to 7 means I to D quality)
+- Records - Select records used for the process (try to test it with a few records first)
+- Show/Hide - Used as boolean var to show/hide reference lines on graphics
+
+You could refresh all graphics in all tabs.
+
+```{r c1, echo=FALSE}
+library('ggplot2')
+summary(diamonds)
+
+g <- diamonds$price
+
+
+```
+
+Slide With Histogram Graphic
+========================================================
+
+```{r c2, echo=FALSE}
+library('ggplot2')
+g <- diamonds$price
+
+h <- hist( g, breaks=10, density=10, col="green", xlab="Prices", main=paste("Hist. Prices & filtered Color - ALL") )
+xfit <- seq(min(g),max(g),length=40 )
+yfit <- dnorm(xfit,mean=mean(g),sd=sd(g) )
+yfit <- yfit*diff(h$mids[1:2])*length(g)
+
+# h
+lines( xfit, yfit, col="red", lwd=2)
+abline( v=5300, col="red", lwd=2 )
+
+```
+
+Slide with Comparatives Graphic
+========================================================
+
+```{r, echo=FALSE}
+library('ggplot2')
+d <- diamonds
+
+plot(d$carat, d$price, main="Scatterplot Carat / Price",
+     xlab="Prices ", ylab="Price / Carat", pch=19 , col=c("red","blue","green","yellow","pink","black","grey") )
+legend( "bottomright", c("D-Red","E-Blue","F-Green","G-Yellow","H-pink","I-Black","J-Grey") )
+
+abline(lm(d$price~d$carat), col="red", lwd=4)
+lines( lowess(d$carat,d$price), col="blue", lwd=4)
+
+```
+
